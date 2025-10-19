@@ -19,6 +19,7 @@ function checkElementId (event){
                 result = '';
                 curNumber = '';
                 changeOutputText ('0');
+                changeExprString('');
                 break;
             case 'C':
                 curNumber = '';
@@ -26,19 +27,34 @@ function checkElementId (event){
                 break;
             case "DEL":
                  data = getOutputText();
-                changeOutputText (data.substring(0, (data.length - 1)));
+                 curNumber = data.substring(0, (data.length - 1));
+                changeOutputText (curNumber);
                 break;
-            case '1/x':
+            case '1/X':
                 data = getOutputText();
+                curNumber = 1/Number(data);
+                changeOutputText (curNumber);
+                changeExprString('1/(' + data +') =');
                 break;
-            case 'x^2':
-                return 'sqr'
+            case 'X^2':
+                data = getOutputText();
+                curNumber = Number(data)**2;
+                changeOutputText (curNumber);
+                changeExprString('X^2 = ')
                 break;
             case 'SQRT(x)':
-                return 'sqrt'
+                data = getOutputText();
+                curNumber = Math.sqrt(Number(data));
+                changeOutputText (curNumber);
+                changeExprString('SQRT(x) = ')
                 break;
             case '÷':
-                return 'devide'
+                data = getOutputText();
+                result = curNumber;
+                curNumber = '';
+                lastAction = '÷'
+                changeExprString(`${result}${lastAction}`);
+                changeOutputText('0');
                 break;
         }
     }
@@ -64,6 +80,11 @@ function inputNumber(data) {
         curNumber += String(data);
         changeOutputText (curNumber);
     }
+}
+
+function changeExprString(data) {
+    let div = document.getElementsByClassName('expr-string')[0];
+    div.innerHTML = data;
 }
 
 function generateButtons() {
