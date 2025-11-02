@@ -56,6 +56,50 @@ function checkElementId (event){
                 changeExprString(`${result}${lastAction}`);
                 changeOutputText('0');
                 break;
+            case '×':
+                data = getOutputText();
+                result = curNumber;
+                curNumber = '';
+                lastAction = '×'
+                changeExprString(`${result}${lastAction}`);
+                changeOutputText('0');
+                break;
+            case '-':
+                data = getOutputText();
+                result = curNumber;
+                curNumber = '';
+                lastAction = '-'
+                changeExprString(`${result}${lastAction}`);
+                changeOutputText('0');
+                break;
+            case '+':
+                data = getOutputText();
+                result = curNumber;
+                curNumber = '';
+                lastAction = '+'
+                changeExprString(`${result}${lastAction}`);
+                changeOutputText('0');
+                break;
+            case '=':
+                data = getOutputText();
+                curNumber = '';
+                changeExprString(`${result}${lastAction}${data}=`);
+                switch(lastAction) {
+                    case '÷':
+                        changeOutputText(Number(result) / Number(data));
+                        break;
+                    case '×':
+                        changeOutputText(Number(result) * Number(data));
+                        break;
+                    case '-':
+                        changeOutputText(Number(result) - Number(data));
+                        break;
+                    case '+':
+                        changeOutputText(Number(result) + Number(data));
+                        break;
+                };
+                break;
+
         }
     }
 }
