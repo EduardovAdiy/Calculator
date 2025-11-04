@@ -4,8 +4,15 @@ let result = '';
 let curNumber = '';
 let lastAction ='';
 
-function checkElementId (event){
-    let button = event.target.id;
+function checkElementId (event, buttons){
+    let button = '';
+
+    if(event !== null) {
+        button = event.target.id;
+    } else {
+        button = buttons.id;
+    };
+
     let data = '';
 
     if(!isNaN(Number(button))) {
@@ -191,10 +198,35 @@ function generateButtons() {
 generateButtons();
 
 document.addEventListener("keydown", function (event) {
-    let regEx = /[0-9]|\+|-|,/;
+    let regEx = /[0-9]|\+|-|,|=/;
     if(regEx.test(event.key)) {
         let button = document.getElementById(event.key);
-        checkElementId(button);
-    }
-    console.log(event.key, regEx.test(event.key))
+        checkElementId(null, button);
+    };
+    
+    if (event.key == '*') {
+        let button = document.getElementById("×");
+        checkElementId(null, button);
+    };
+
+    if (event.key == '/') {
+        let button = document.getElementById("÷");
+        checkElementId(null, button);
+    };
+
+    if (event.key == 'Enter') {
+        let button = document.getElementById("=");
+        checkElementId(null, button);
+    };
+
+    if (event.key == '.') {
+        let button = document.getElementById(",");
+        checkElementId(null, button);
+    };
+
+    if (event.key == 'Backspace') {
+        let button = document.getElementById("DEL");
+        checkElementId(null, button);
+    };
+
 })
