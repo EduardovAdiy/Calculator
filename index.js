@@ -20,6 +20,7 @@ function checkElementId (event){
                 curNumber = '';
                 changeOutputText ('0');
                 changeExprString('');
+                lastAction = '';
                 break;
             case 'C':
                 curNumber = '';
@@ -28,6 +29,7 @@ function checkElementId (event){
             case "DEL":
                  data = getOutputText();
                  curNumber = data.substring(0, (data.length - 1));
+                 lastAction = '';
                 changeOutputText (curNumber);
                 break;
             case '1/X':
@@ -35,74 +37,108 @@ function checkElementId (event){
                 curNumber = 1/Number(data);
                 changeOutputText (curNumber);
                 changeExprString('1/(' + data +') =');
+                lastAction = '';
                 break;
             case 'X^2':
                 data = getOutputText();
                 curNumber = Number(data)**2;
                 changeOutputText (curNumber);
-                changeExprString('X^2 = ')
+                changeExprString('X^2 = ');
+                lastAction = '';
                 break;
             case 'SQRT(x)':
                 data = getOutputText();
                 curNumber = Math.sqrt(Number(data));
                 changeOutputText (curNumber);
-                changeExprString('SQRT(x) = ')
+                changeExprString('SQRT(x) = ');
+                lastAction = '';
                 break;
             case '÷':
                 data = getOutputText();
+                execData();
                 result = curNumber;
                 curNumber = '';
                 lastAction = '÷'
-                changeExprString(`${result}${lastAction}`);
+                changeExprString(`${result} ${lastAction}`);
                 changeOutputText('0');
                 break;
             case '×':
                 data = getOutputText();
                 result = curNumber;
+                execData();
                 curNumber = '';
                 lastAction = '×'
-                changeExprString(`${result}${lastAction}`);
+                changeExprString(`${result} ${lastAction}`);
                 changeOutputText('0');
                 break;
             case '-':
                 data = getOutputText();
+                execData();
                 result = curNumber;
                 curNumber = '';
                 lastAction = '-'
-                changeExprString(`${result}${lastAction}`);
+                changeExprString(`${result} ${lastAction}`);
                 changeOutputText('0');
                 break;
             case '+':
                 data = getOutputText();
+                execData();
                 result = curNumber;
                 curNumber = '';
                 lastAction = '+'
-                changeExprString(`${result}${lastAction}`);
+                changeExprString(`${result} ${lastAction}`);
                 changeOutputText('0');
                 break;
             case '=':
+                execData();
+                break;
+            case '+/-':
                 data = getOutputText();
-                curNumber = '';
-                changeExprString(`${result}${lastAction}${data}=`);
-                switch(lastAction) {
-                    case '÷':
-                        changeOutputText(Number(result) / Number(data));
-                        break;
-                    case '×':
-                        changeOutputText(Number(result) * Number(data));
-                        break;
-                    case '-':
-                        changeOutputText(Number(result) - Number(data));
-                        break;
-                    case '+':
-                        changeOutputText(Number(result) + Number(data));
-                        break;
+                if (data != 0) {
+                    curNumber = Number(data) * -1;
+                    changeOutputText(curNumber);
                 };
                 break;
+            case ',':
+                data = getOutputText();
+                if (data == 0) {
+                    data = 0;
+                };
 
+                if(!isNaN(Number(`${Number(data)}.`))) {
+                    curNumber = `${Number(data)}.`;
+                    changeOutputText(curNumber);
+                };
         }
     }
 }
+
+function execData() {
+    let data = getOutputText();
+    if (lastAction !='') {
+        changeExprString(`${result} ${lastAction} ${data} =`);
+    };
+
+    switch(lastAction) {
+                    case '÷':
+                        curNumber = Number(result) / Number(data);
+                        changeOutputText(Number(result) / Number(data));
+                        break;
+                    case '×':
+                        curNumber = Number(result) * Number(data);
+                        changeOutputText(Number(result) * Number(data));
+                        break;
+                    case '-':
+                        curNumber = Number(result) - Number(data);
+                        changeOutputText(Number(result) - Number(data));
+                        break;
+                    case '+':
+                        curNumber = Number(result) + Number(data);
+                        changeOutputText(Number(result) + Number(data));
+                        break;
+                };
+    lastAction = '';
+};
 
 function changeOutputText (data) {
     let div = document.getElementsByClassName("output-text")[0];
@@ -153,3 +189,12 @@ function generateButtons() {
 }
 
 generateButtons();
+
+document.addEventListener("keydown", function (event) {
+    let regEx = /[0-9]|\+|-|,/;
+    if(regEx.test(event.key)) {
+        let button = document.getElementById(event.key);
+        checkElementId(button);
+    }
+    console.log(event.key, regEx.test(event.key))
+})
