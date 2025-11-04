@@ -198,35 +198,28 @@ function generateButtons() {
 generateButtons();
 
 document.addEventListener("keydown", function (event) {
+    let button = document.getElementById("=");
+    button.focus();
+
     let regEx = /[0-9]|\+|-|,|=/;
+
     if(regEx.test(event.key)) {
         let button = document.getElementById(event.key);
         checkElementId(null, button);
-    };
-    
-    if (event.key == '*') {
+    } else if (event.key == '*') {
         let button = document.getElementById("×");
         checkElementId(null, button);
-    };
-
-    if (event.key == '/') {
+    } else if (event.key == '/') {
         let button = document.getElementById("÷");
         checkElementId(null, button);
-    };
-
-    if (event.key == 'Enter') {
+    } else if (event.key == 'Enter') {
         let button = document.getElementById("=");
         checkElementId(null, button);
-    };
-
-    if (event.key == '.') {
+    } else if (event.key == '.') {
         let button = document.getElementById(",");
         checkElementId(null, button);
-    };
-
-    if (event.key == 'Backspace') {
+    }else if (event.key == 'Backspace') {
         let button = document.getElementById("DEL");
         checkElementId(null, button);
-    };
-
+    };    
 })
